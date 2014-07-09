@@ -1,0 +1,13 @@
+{{#if this.classDescription }}
+/**
+* {{this.classDescription}}
+*/
+{{/if}}
+class {{className}} implements Serializable {
+{{#classMembers}}
+{{#if this.comment }}
+  /* {{this.comment}}*/
+{{/if}}
+  {{{this.type}}} {{this.name}}
+{{/classMembers}}
+}

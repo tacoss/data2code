@@ -1,0 +1,16 @@
+{
+  "name": "apicat",
+  "version": "0.0.0",
+  "description": "Barebones codegenerator for RAML ",
+  "main": "test-raml1.js",
+  "dependencies": {
+    "handlebars": "~2.0.0-alpha.4",
+    "raml-parser": "~0.8.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
