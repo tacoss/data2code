@@ -1,6 +1,6 @@
 raml = require("raml-parser")
 Handlebars = require("handlebars")
-fs = require('fs');
+fs = require('fs')
 
 Handlebars.registerHelper "debug", (optionalValue) ->
 Handlebars.registerHelper "debug", (optionalValue) ->
@@ -33,11 +33,11 @@ parse = (data) ->
 parseSchemas = (s) ->
   schema = {}
   for data in s
-   for key of data
-     schema[key] = JSON.parse(data[key])
+    for key of data
+      schema[key] = JSON.parse(data[key])
   
   #console.log schema
-  resourceHbs = require('./schema.hbs')
+  resourceHbs = require('./../test/templates/schema.hbs')
   for key of schema
     
     console.log resourceHbs(parseSchemaToJava(schema[key]))
@@ -51,14 +51,14 @@ parseSchemaToJava = (data) ->
 
   if data.type is "array"
     ref = data.items['$ref'].replace("#/", "")
-    ref =  ref.charAt(0).toUpperCase() + ref.slice(1);
+    ref =  ref.charAt(0).toUpperCase() + ref.slice(1)
     model.classMembers.push {name: "items", type: "List<#{ref}>"}
   for key of data.properties
     p = data.properties[key]
     property = {}
     property.name = key
     switch p.type
-      when 'array'  
+      when 'array'
         property.type = "List"
         property.name = "items"
       when 'string' then property.type = "String"
@@ -66,11 +66,11 @@ parseSchemaToJava = (data) ->
       when 'Number' then property.type = "Double"
       when 'integer' then property.type = "Integer"
     property.comment = p.description
-    model.classMembers.push property 
+    model.classMembers.push property
 
   model
 
 parseResources = (r) ->
 
-  resourceHbs = require('./resource.hbs')
+  resourceHbs = require('./../test/templates/resource.hbs')
   console.log resourceHbs(r)

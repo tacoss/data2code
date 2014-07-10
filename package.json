@@ -1,16 +1,39 @@
 {
-  "name": "apicat",
-  "version": "0.0.0",
-  "description": "Barebones codegenerator for RAML ",
+  "name": "data2Code",
+  "version": "0.0.1",
+  "description": "Barebones codegenerator for data",
   "main": "test-raml1.js",
   "dependencies": {
-    "handlebars": "~2.0.0-alpha.4",
-    "raml-parser": "~0.8.7"
+    "handlebars": "~2.0.0-alpha.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "coffeeify": "~0.6.0",
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.13",
+    "grunt-coffeelint": "0.0.10",
+    "grunt-contrib-coffee": "~0.10.1",
+    "load-grunt-tasks": "~0.6.0",
+    "chai": "~1.9.1",
+    "mocha": "~1.20.1",
+    "grunt-mocha-cli": "~1.9.0",
+    "chai-as-promised": "~4.1.1",
+    "raml-parser": "~0.8.7",
+    "grunt-contrib-watch": "~0.6.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Tomas Salazar",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gextech/data2code"
+  },
+  "bugs": {
+    "url": "https://github.com/atomsfat/catapi/issues"
+  },
+  "homepage": "https://github.com/atomsfat/catapi",
+  "directories": {
+    "test": "test"
+  }
 }
