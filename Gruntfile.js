@@ -17,6 +17,10 @@ module.exports = function(grunt) {
       coffee: {
         files: ['src/*.coffee'],
         tasks: ['test']
+      },
+      test: {
+        files: ['test/*.js'],
+        tasks: ['test']
       }
     },
     coffeelint: {
@@ -35,7 +39,7 @@ module.exports = function(grunt) {
         growl: true,
         grep: grunt.option('grep') || ''
       },
-      all: ['test/specs/*.js']
+      all: ['test/*spec.js']
     }
 
 
