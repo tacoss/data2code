@@ -1,7 +1,7 @@
 # data to code generator
   
   * This module generate code from a javascript Object
-  * It uses Handlebars templates by default but it could be configured 
+  * It uses Handlebars templates
   * It is primary use to make code from [raml-js-parser](https://github.com/raml-org/raml-js-parser)
   
 ## Defining a Generator
@@ -29,11 +29,17 @@ A generator is a simple object with the following properties:
 var data2Code = require('data2Code');
 var raml = require('raml-parser');
 
+var simpleGen = {};
+simpleGen.template = '{{title}}';
+var handleRender = function (result) {
+  console.log(result);
+}
 
-data2Code.register(generatorFromSchema);    //where generatorFromSchema it's the definition of this generator 
-data2Code.register(generatorFromResource);
 
-raml.loadFile('myAPI.raml').then( data2code.process, function(error) {
+raml.loadFile('myAPI.raml').then( function(data){
+  data2Code.process(data, simpleGen);   
+  data2Code.process(data, anotherGen);
+}, function(error) {
   console.log('Error parsing: ' + error);
 });
 
@@ -43,12 +49,7 @@ raml.loadFile('myAPI.raml').then( data2code.process, function(error) {
     
 ## Configuration 
 
-To change the template engine: 
 
- ```
- raml2code.config({tmplEngine : function(tmpl, data)})
- ```
- 
  
     
 
