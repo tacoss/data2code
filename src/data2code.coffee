@@ -26,7 +26,6 @@ module.exports.process = (data , gen) ->
     else
       dataParsed  = data
 
-    console.log "type of data is Array:", Array.isArray dataParsed
     try
       template = Handlebars.compile(gen.template)
       if Array.isArray dataParsed

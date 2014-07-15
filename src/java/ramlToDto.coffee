@@ -40,8 +40,7 @@ module.exports.generator = ->
         if data.type is "array"
           ref = data.items['$ref'].replace("#/", "")
           ref = capitalize(ref)
-
-        model.classMembers.push {name: "items", type: "List<#{ref}>"}
+          model.classMembers.push {name: "items", type: "List<#{ref}>"}
         for key of data.properties
           p = data.properties[key]
           property = {}
@@ -57,11 +56,13 @@ module.exports.generator = ->
             when 'integer' then property.type = "Integer"
 
         model.classMembers.push property
+        model.extra = datos.extra if datos.extra
         parsed.push {name: capitalize("#{schemaName}.groovy") , data:model}
+
 
     parsed
 
-  generator.template = "wee {{title}}"
+  generator.template = fs.readFileSync(__dirname + "/dto.hbs").toString()
 
   generator
 

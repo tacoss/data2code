@@ -10,6 +10,7 @@ if  require.main is module
   .option('-i, --input [input]', 'RAML input file')
   .option('-g, --generators [generators]', 'Generator modules comma separated')
   .option('-o, --outputDir [outputDir]', 'Output Dir')
+  .option('-e, --extra [extra]', "JSON string to be added to model")
   .parse(process.argv)
 
   if not (program.input  and program.generators and program.outputDir)
@@ -19,20 +20,19 @@ if  require.main is module
 
   generators = []
   for gen in program.generators.split(",")
-    genm = require(gen).generator()
+    g = require(gen).generator()
 #    console.log "generator ->", genm
-    genm.handleRender = (results)->
-      console.log "raml2code#result ->" , results
+    g.handleRender = (results)->
+#      console.log "raml2code#result ->" , results
       for result in results
         if result.name and result.str
-          console.log result
           writeFile("#{program.outputDir}/#{result.name}", result.str)
         else
           console.log "no name"
 
 
 
-    generators.push genm
+    generators.push g
 
   writeFile = (path, content) ->
     fs.writeFile path, content, (err) ->
@@ -42,8 +42,21 @@ if  require.main is module
         console.log "The file #{path} was generated!"
       return
 
+  parseExtra = (str)->
+    data = {}
+    if str
+      try
+        data = JSON.parse(program.extra)
+      catch e
+        console.error e
+    return data
+
+
   raml.loadFile(program.input).then ((data) ->
 #    console.log data
+
+    data.extra =  parseExtra(program.extra)
+
     for gen in generators
       data2code.process(data, gen)
     return
