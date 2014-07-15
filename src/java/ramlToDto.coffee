@@ -1,4 +1,8 @@
-Handlebars.registerHelper "debug", (optionalValue) ->
+fs = require('fs')
+
+generator = {}
+generator.helpers = []
+generator.helpers.push {name:'debug', fn: (optionalValue)->
   console.log "Current Context"
   console.log "===================="
   console.log this
@@ -6,26 +10,16 @@ Handlebars.registerHelper "debug", (optionalValue) ->
     console.log "Value"
     console.log "===================="
     console.log optionalValue
-return
+  return
+}
 
-Handlebars.registerHelper "parseSchema", (context, options) ->
+generator.helpers.push {name:'parseSchema', fn: (context, options) ->
   schema = JSON.parse(this.schema)
   console.log schema
-return options.fn(schema)
+  return options.fn(schema)
+}
 
-parseSchemas = (s) ->
-  schema = {}
-  for data in s
-    for key of data
-      schema[key] = JSON.parse(data[key])
-
-#console.log schema
-resourceHbs = require('./../test/templates/schema.hbs')
-for key of schema
-  console.log resourceHbs(parseSchemaToJava(schema[key]))
-
-
-parseSchemaToJava = (data) ->
+generator.parser = (data) ->
   model = {}
   model.className = data.title
   model.classMembers = []
@@ -45,10 +39,14 @@ parseSchemaToJava = (data) ->
         property.type = "List"
         property.name = "items"
       when 'string' then property.type = "String"
-      when 'boolean' then property.type = "Bolean"
+      when 'boolean' then property.type = "Boolean"
       when 'Number' then property.type = "Double"
       when 'integer' then property.type = "Integer"
   property.comment = p.description
   model.classMembers.push property
 
-   model
+  model
+
+generator.template = require('./lib/java/dto.hbs')
+
+module.export = generator

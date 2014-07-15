@@ -18,7 +18,8 @@
     "grunt-mocha-cli": "~1.9.0",
     "chai-as-promised": "~4.1.1",
     "raml-parser": "~0.8.7",
-    "grunt-contrib-watch": "~0.6.1"
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-copy": "~0.5.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -35,5 +36,8 @@
   "homepage": "https://github.com/atomsfat/catapi",
   "directories": {
     "test": "test"
+  },
+  "bin":{
+    "data2code" : "lib/raml2code.coffee.js"
   }
 }

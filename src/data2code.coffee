@@ -1,5 +1,4 @@
 Handlebars = require("handlebars")
-fs = require('fs')
 
 module.exports.process = (data , gen) ->
   # console.log "Data2Code#process", gen
@@ -26,6 +25,9 @@ module.exports.process = (data , gen) ->
       gen.handleRender(template(dataParsed))
     catch e
       console.log e
+
+
+
 
 
 

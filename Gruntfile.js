@@ -4,18 +4,26 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    coffee: {
-      files: {
-        expand: true,
-        flatten: true,
-        src: 'src/*.coffee',
-        dest: 'lib',
-        ext: '.js'
+    copy: {
+      main: {
+        files: [
+          {expand: true, cwd: 'src/', src: ['*.hbs', '**/*hbs'], dest: 'lib/', filter: 'isFile'}
+        ]
       }
+    },
+    coffee: {
+      compile : {
+        files: {
+         'lib/data2code.js' : 'src/data2code.coffee',
+         'lib/java/ramlToDto.js' : 'src/java/ramlToDto.coffee',
+         'lib/raml2code.js' : 'src/raml2code.coffee'
+        }
+      }
+
     },
     watch: {
       coffee: {
-        files: ['src/*.coffee'],
+        files: ['src/*.coffee', 'src/**/*.coffee'],
         tasks: ['test']
       },
       test: {
@@ -29,7 +37,7 @@ module.exports = function(grunt) {
           level: 'ignore'
         }
       },
-      app: ['src/*.coffee']
+      app: ['src/*.coffee', 'src/**/*.coffee']
     },
     mochacli: {
       options: {
