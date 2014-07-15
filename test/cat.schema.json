@@ -11,7 +11,12 @@
     "name": {
       "description": "Name of the cat",
       "type": "string"
+    },
+    "ownerName":{
+      "description": "Name of the owner",
+      "type": "string"
     }
+
   },
   "required": ["id", "name"]
 }

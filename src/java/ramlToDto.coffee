@@ -55,7 +55,7 @@ module.exports.generator = ->
             when 'Number' then property.type = "Double"
             when 'integer' then property.type = "Integer"
 
-        model.classMembers.push property
+          model.classMembers.push property
         model.extra = datos.extra if datos.extra
         parsed.push {name: capitalize("#{schemaName}.groovy") , data:model}
 
