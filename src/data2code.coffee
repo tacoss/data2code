@@ -8,7 +8,8 @@ module.exports.process = (data , gen) ->
     template = Handlebars.compile(gen.template)
     if gen.helpers and gen.helpers instanceof Array
       for helper in gen.helpers
-        Handlebars.registerHelper helper if typeof helper is 'function'
+        if helper.name and helper.fn and typeof helper.fn is 'function'
+          Handlebars.registerHelper(helper.name, helper.fn)
     if gen.partials
       for partial in gen.partials
         if partial.name and partial.str
