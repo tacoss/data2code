@@ -6,7 +6,7 @@ describe('data2code basic test', function () {
 
   var handleRender = function (done, expectedResult, result) {
     try {
-      expect(result).to.equal(expectedResult);
+      expect(result[0]).to.be.equal(expectedResult);
       done();
     } catch (x) {
       done(x);
