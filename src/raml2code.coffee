@@ -21,17 +21,12 @@ if  require.main is module
   generators = []
   for gen in program.generators.split(",")
     g = require(gen).generator()
-#    console.log "generator ->", genm
     g.handleRender = (results)->
-#      console.log "raml2code#result ->" , results
       for result in results
         if result.name and result.str
           writeFile("#{program.outputDir}/#{result.name}", result.str)
         else
           console.log "no name"
-
-
-
     generators.push g
 
   writeFile = (path, content) ->
@@ -53,10 +48,7 @@ if  require.main is module
 
 
   raml.loadFile(program.input).then ((data) ->
-#    console.log data
-
     data.extra =  parseExtra(program.extra)
-
     for gen in generators
       data2code.process(data, gen)
     return

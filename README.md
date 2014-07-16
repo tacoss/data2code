@@ -45,10 +45,16 @@ raml.loadFile('myAPI.raml').then( function(data){
 
 
 ```
-   
+## generators included
+    * raml to DTO groovy  
     
-## Configuration 
+## raml2code
 
+As a command line script:
+
+ ```bash
+ node lib/raml2code.js -i test/cats.raml -g "./java/ramlToDto.js" -o target -e '{"package":"gex.dt"}' 
+```
 
  
     
