@@ -2,6 +2,7 @@ fs = require('fs')
 module.exports.generator = ->
   generator = {}
   generator.helpers = []
+
   generator.helpers.push {name:'debug', fn: (optionalValue)->
     console.log "Current Context"
     console.log "===================="
@@ -11,12 +12,6 @@ module.exports.generator = ->
       console.log "===================="
       console.log optionalValue
     return
-  }
-
-  generator.helpers.push {name:'parseSchema', fn: (context, options) ->
-    schema = JSON.parse(this.schema)
-    console.log schema
-    return options.fn(schema)
   }
 
   capitalize = (str)->
@@ -58,8 +53,6 @@ module.exports.generator = ->
           model.classMembers.push property
         model.extra = datos.extra if datos.extra
         parsed.push {name: capitalize("#{schemaName}.groovy") , data:model}
-
-
     parsed
 
   generator.template = fs.readFileSync(__dirname + "/dto.hbs").toString()

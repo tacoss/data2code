@@ -1,18 +1,3 @@
-{{#if this.classDescription }}
-/**
-* {{this.classDescription}}
-*/
-{{/if}}
-class {{className}} implements Serializable {
-{{#classMembers}}
-{{#if this.comment }}
-  /* {{this.comment}}*/
-{{/if}}
-  {{{this.type}}} {{this.name}}
-{{/classMembers}}
-}
-
-
 package {{extra.package}}
 {{debug}}
 class {{displayName}} implements Serializable {
