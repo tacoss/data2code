@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, cwd: 'src/', src: ['*.hbs', '**/*hbs'], dest: 'lib/', filter: 'isFile'}
+          {expand: true, cwd: 'src/', src: ['*.hbs', '**/*.hbs'], dest: 'lib/', filter: 'isFile'}
         ]
       }
     },
@@ -24,12 +24,12 @@ module.exports = function(grunt) {
     },
     watch: {
       coffee: {
-        files: ['src/*.coffee', 'src/**/*.coffee'],
-        tasks: ['test']
+        files: ['src/*.coffee', 'src/**/*.coffee', 'src/**/*.hbs' ],
+        tasks: ['copy', 'test']
       },
       test: {
         files: ['test/*.js'],
-        tasks: ['test']
+        tasks: ['copy','test']
       }
     },
     coffeelint: {
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'build', 'watch'
+    'build', 'copy', 'watch'
   ]);
 
 };
