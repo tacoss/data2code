@@ -16,7 +16,8 @@ module.exports = function(grunt) {
         files: {
          'lib/data2code.js' : 'src/data2code.coffee',
          'lib/java/ramlToDto.js' : 'src/java/ramlToDto.coffee',
-         'lib/raml2code.js' : 'src/raml2code.coffee'
+         'lib/raml2code.js' : 'src/raml2code.coffee',
+         'lib/helpers/common.js' : 'src/helpers/common.coffee'
         }
       }
 

@@ -1,18 +1,10 @@
 fs = require('fs')
+commonHelpers = require("../helpers/common.js").helpers()
+console.log "commonHelpers", commonHelpers
+
 module.exports.generator = ->
   generator = {}
-  generator.helpers = []
-
-  generator.helpers.push {name:'debug', fn: (optionalValue)->
-    console.log "Current Context"
-    console.log "===================="
-    console.log this
-    if optionalValue
-      console.log "Value"
-      console.log "===================="
-      console.log optionalValue
-    return
-  }
+  generator.helpers = commonHelpers
 
   capitalize = (str)->
     str.charAt(0).toUpperCase() + str.slice(1)
