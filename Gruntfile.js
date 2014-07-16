@@ -15,7 +15,7 @@ module.exports = function(grunt) {
       compile : {
         files: {
          'lib/data2code.js' : 'src/data2code.coffee',
-         'lib/java/raml2DTO.js' : 'src/java/raml2DTO.coffee',
+         'lib/groovy/raml2DTO.js' : 'src/groovy/raml2DTO.coffee',
          'lib/raml2code.js' : 'src/raml2code.coffee',
          'lib/helpers/common.js' : 'src/helpers/common.coffee'
         }
