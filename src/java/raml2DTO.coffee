@@ -1,6 +1,5 @@
 fs = require('fs')
 commonHelpers = require("../helpers/common.js").helpers()
-console.log "commonHelpers", commonHelpers
 
 module.exports.generator = ->
   generator = {}
