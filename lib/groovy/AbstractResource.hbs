@@ -6,20 +6,20 @@ public abstract class {{className}} {
 
   def responseHandlers = [:]
   {{className}}(){
-    {{#classMethods.responses}}responseHandlers.put({{../className}}.Status.{{methodName}}_{{statusCode}}, {data-> new {{type}}DTO(data)})
+    {{#classMethods.responses}}responseHandlers.put({{../className}}.Code.{{statusCode}}_{{methodName}}, {data-> new {{type}}DTO(data)})
     {{/classMethods.responses}}
   }
 
-  public enum Status{
+  public enum Code{
     {{#classMethods.responses}}
-    {{methodName}}_{{statusCode}}({{statusCode}}),{{/classMethods.responses}}
+    {{statusCode}}_{{methodName}}({{statusCode}}),{{/classMethods.responses}}
     private final int code;
     Status(final int statusCode){
       this.code = statusCode
     }
   }
 
-  def handleResponse({{className}}.Status status, data){
+  def handleResponse({{className}}.Code code, data){
     responseHandlers.get(status)(data)
   }
 
