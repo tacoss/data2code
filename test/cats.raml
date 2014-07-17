@@ -14,6 +14,10 @@ resourceTypes:
           200:
             body:
               schema: <<resourcePathName>>
+          500:
+            body:
+              schema: <<resourcePathName>>
+
       post:
         responses:
           200:
@@ -25,11 +29,10 @@ resourceTypes:
         responses:
           200:
             body:
-              schema: <<resourcePathName>>
+              schema: <<resourcePathName| !singularize>>
           201:
-            description Testing data
             body:
-              schema: <<resourcePathName>>
+              schema: <<resourcePathName| !singularize>>
               
       put:
         description: Update a cat
@@ -38,7 +41,7 @@ resourceTypes:
         responses:
           201:
             body:
-              schema: <<resourcePathName>>
+              schema: <<resourcePathName| !singularize>>
       delete:
         responses:
           304:
