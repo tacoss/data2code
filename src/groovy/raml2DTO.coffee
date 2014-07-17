@@ -4,16 +4,12 @@ commonHelpers = require("../helpers/common.js").helpers()
 module.exports.generator = ->
   generator = {}
   generator.helpers = commonHelpers
+  generator.template = fs.readFileSync(__dirname + "/DTO.hbs").toString()
 
   capitalize = (str)->
     str.charAt(0).toUpperCase() + str.slice(1)
 
   generator.parser = (datos) ->
-
-    if not datos
-      console.error "no data defined"
-      return
-
     parsed = []
     for row in datos.schemas
       for schemaName of row
@@ -43,10 +39,8 @@ module.exports.generator = ->
 
           model.classMembers.push property
         model.extra = datos.extra if datos.extra
-        parsed.push {name: capitalize("#{schemaName}.groovy") , data:model}
+        parsed.push {name: capitalize("#{schemaName}DTO.groovy") , model}
     parsed
-
-  generator.template = fs.readFileSync(__dirname + "/dto.hbs").toString()
 
   generator
 

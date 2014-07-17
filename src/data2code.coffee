@@ -31,11 +31,11 @@ module.exports.process = (data , gen) ->
       if Array.isArray dataParsed
         result = []
         for obj in dataParsed
-          result.push {name: obj.name, str :template(obj.data)}
+          result.push {name: obj.name, str :template(obj.model)}
         gen.handleRender(result)
       else
-        if dataParsed.name and data.parse.data
-          gen.hanleRender([{name:dataParsed.name,str: template(dataParsed) }])
+        if dataParsed.name and dataParsed.model
+          gen.hanleRender([{name:dataParsed.name,str: template(dataParsed.model) }])
         else
           gen.handleRender([template(dataParsed)])
     catch e

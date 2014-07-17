@@ -26,8 +26,15 @@ resourceTypes:
           200:
             body:
               schema: <<resourcePathName>>
+          201:
+            description Testing data
+            body:
+              schema: <<resourcePathName>>
               
       put:
+        description: Update a cat
+        body:
+          schema: <<resourcePathName>>
         responses:
           201:
             body:
@@ -43,6 +50,7 @@ resourceTypes:
   type: collection
     
   /{catId}:
+    displayName: Gato
     description: Un gatito en especifico
     type: member
   
