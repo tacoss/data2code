@@ -53,7 +53,7 @@ raml.loadFile('myAPI.raml').then( function(data){
 As a command line script:
 
  ```bash
- node lib/raml2code.js -i test/cats.raml -g "./java/ramlToDto.js" -o target -e '{"package":"gex.dt"}' 
+ node lib/raml2code.js -i test/cats.raml -g "./groovy/ramlToDto.js" -o target -e '{"package":"gex.dt"}' 
 ```
 
  
