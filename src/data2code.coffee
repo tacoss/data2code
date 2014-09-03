@@ -40,6 +40,7 @@ module.exports.process = (data , gen) ->
           gen.handleRender([template(dataParsed)])
     catch e
       console.log e
+      null
   else
     console.error "generator.handleRender not defined"
 
