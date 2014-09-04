@@ -21,6 +21,7 @@ if  require.main is module
   generators = []
   for gen in program.generators.split(",")
     g = require(gen)
+    
     g.handleRender = (results)->
       for result in results
         if result.name and result.str

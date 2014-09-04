@@ -1,8 +1,8 @@
 {
   "name": "data2Code",
   "version": "0.0.1",
-  "description": "Barebones codegenerator for data",
-  "main": "test-raml1.js",
+  "description": "Codegenerator for data",
+  "main": "lib/data2code.js",
   "dependencies": {
     "handlebars": "~2.0.0-alpha.4"
   },
@@ -32,13 +32,13 @@
     "url": "git://github.com/gextech/data2code"
   },
   "bugs": {
-    "url": "https://github.com/atomsfat/catapi/issues"
+    "url": "https://github.com/gextech/data2code/issues"
   },
-  "homepage": "https://github.com/atomsfat/catapi",
+  "homepage": "https://github.com/gextech/data2code",
   "directories": {
     "test": "test"
   },
   "bin":{
-    "data2code" : "lib/raml2code.coffee.js"
+    "data2code" : "lib/data2code.js"
   }
 }

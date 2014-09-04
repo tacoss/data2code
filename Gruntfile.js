@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, cwd: 'src/', src: ['*.hbs', '**/*.hbs'], dest: 'lib/', filter: 'isFile'}
+          {expand: true, cwd: 'src/generators', src: ['*.hbs',  '**/*.hbs'], dest: 'lib/generators', filter: 'isFile'}
         ]
       }
     },
@@ -16,9 +16,9 @@ module.exports = function(grunt) {
         files: {
          'lib/data2code.js' : 'src/data2code.coffee',
          'lib/raml2code.js' : 'src/raml2code.coffee',
-         'lib/groovy/raml2DTO.js' : 'src/groovy/raml2DTO.coffee',
-         'lib/groovy/raml2AbstractResource.js' : 'src/groovy/raml2AbstractResource.coffee',
-         'lib/helpers/common.js' : 'src/helpers/common.coffee'
+         'lib/generators/groovy/raml2DTO.js' : 'src/generators/groovy/raml2DTO.coffee',
+         'lib/generators/groovy/raml2AbstractResource.js' : 'src/generators/groovy/raml2AbstractResource.coffee',
+         'lib/generators/helpers/common.js' : 'src/generators/helpers/common.coffee'
         }
       }
 
@@ -62,16 +62,18 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('build', [
-    'compile'
+    'compile',
+    'copy'
   ]);
 
   grunt.registerTask('test', [
     'compile',
+    'copy',
     'mochacli'
   ]);
 
   grunt.registerTask('default', [
-    'build', 'copy', 'watch'
+    'build', 'watch'
   ]);
 
 };

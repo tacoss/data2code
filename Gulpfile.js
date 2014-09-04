@@ -1,6 +1,6 @@
 var gulp = require('gulp');
-var data2code = require('./index.js');
-var gen = require('./lib/groovy/raml2DTO.js')
+var data2code = require('./gulp-data2code.js');
+var gen = require('./lib/generators/groovy/raml2DTO.js')
 
 gulp.task("test", function(){
   gulp.src('./test/cats.raml')
