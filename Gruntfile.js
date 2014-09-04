@@ -15,10 +15,6 @@ module.exports = function(grunt) {
       compile : {
         files: {
          'lib/data2code.js' : 'src/data2code.coffee',
-         'lib/raml2code.js' : 'src/raml2code.coffee',
-         'lib/generators/groovy/raml2DTO.js' : 'src/generators/groovy/raml2DTO.coffee',
-         'lib/generators/groovy/raml2AbstractResource.js' : 'src/generators/groovy/raml2AbstractResource.coffee',
-         'lib/generators/helpers/common.js' : 'src/generators/helpers/common.coffee'
         }
       }
 
@@ -50,7 +46,10 @@ module.exports = function(grunt) {
         grep: grunt.option('grep') || ''
       },
       all: ['test/*spec.js']
-    }
+    },
+   clean: {
+     build: ["lib"]
+   }
 
 
   });
@@ -62,14 +61,14 @@ module.exports = function(grunt) {
 
 
   grunt.registerTask('build', [
+    'clean',
     'compile',
     'copy'
   ]);
 
   grunt.registerTask('test', [
-    'compile',
-    'copy',
-    'mochacli'
+   'build',
+   'mochacli'
   ]);
 
   grunt.registerTask('default', [

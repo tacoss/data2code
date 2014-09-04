@@ -4,3 +4,4 @@ apicat.iml
 data2code.iml
 target
 build
+*.DS_Store
