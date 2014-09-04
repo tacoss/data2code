@@ -1,5 +1,5 @@
 {
-  "name": "data2Code",
+  "name": "data2code",
   "version": "0.0.1",
   "description": "Codegenerator for data",
   "main": "lib/data2code.js",
