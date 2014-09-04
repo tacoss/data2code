@@ -9,20 +9,19 @@ var PluginError = gutil.PluginError;
 const PLUGIN_NAME = 'raml2code';
 
 
-function process(file, source, self, cb, options){
-  console.log(file.path);
-  raml.loadFile(file.path).then(function (data) {
+function process(fileName, self, callback, options){
+  raml.loadFile(fileName.path).then(function (data) {
     if(options.generator){
       options.generator.handleRender = function(results){
         results.forEach(function(element, index, array){
           if(element.name && element.str){
-            var file = new File({
-              base: file.base,
-                cwd: file.cwd,
-                path: gutil.replaceExtension(file.path, element.name),
-                contents: new Buffer(code)
+            var fileG = new gutil.File({
+              base: "",
+              cwd: "",
+              path: element.name,
+              contents: new Buffer(element.str)
             });
-            self.push(file)
+            self.push(fileG);
           }
         });
 
@@ -30,7 +29,7 @@ function process(file, source, self, cb, options){
       var code = data2code.process(data, options.generator);
     }
 
-    cb();
+    callback();
 
   }, function (error) {
     console.log('Error parsing: ' + error);
@@ -49,7 +48,7 @@ module.exports = function(options){
       return cb();
     }
     if (file.isBuffer()) {
-      return process(file, file.contents, this, cb, options);
+      return process(file, this, cb, options);
     }  
   });
   return stream;

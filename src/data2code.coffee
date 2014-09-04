@@ -13,7 +13,6 @@ module.exports.process = (data , gen) ->
           console.error "helpers not are in incorrect format"
 
     if gen.partials
-      console.log gen.partial
       for partial in gen.partials
         if partial.name and partial.str
           Handlebars.registerPartial(partial.name, partial.str)
@@ -25,7 +24,6 @@ module.exports.process = (data , gen) ->
         console.log "Parser error" , e
     else
       dataParsed  = data
-
     try
       template = Handlebars.compile(gen.template)
       if Array.isArray dataParsed
