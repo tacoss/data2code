@@ -1,45 +1,56 @@
 'use strict';
 var raml = require('raml-parser'), expect = require('chai').expect;
-var data2Code = new require('../lib/data2code');
+var data2Code = require('..');
 
 describe('data2code basic test', function () {
 
   var handleRender = function (done, expectedResult, result) {
     try {
-      expect(result[0]).to.be.equal(expectedResult);
+      result[0].content.should.equal(expectedResult);
+      result[0].name.should.equal("test.test");
       done();
     } catch (x) {
       done(x);
     }
   };
 
+  var sampleData = [{ name: "test.test", model: {title: "Compra venta de gatitos"}}];
+
+
   it('should generate something', function (done) {
     var simpleGen = {};
     simpleGen.template = '{{title}}';
     simpleGen.handleRender = handleRender.bind(undefined, done, "Compra venta de gatitos");
 
-    raml.loadFile('./test/cats.raml').then(function (data) {
-      data2Code.process(data, simpleGen);
-    }, function (error) {
-      console.log('Error parsing: ' + error);
-    });
+    data2Code.process(sampleData, simpleGen);
 
   });
-
   it('testing parser', function (done) {
     var simpleGen = {};
     simpleGen.template = '{{title}}';
     simpleGen.parser = function (data) {
-      return {title: data.title + " finos"}
+      return sampleData
     };
 
-    simpleGen.handleRender = handleRender.bind(undefined, done, "Compra venta de gatitos finos");
+    simpleGen.handleRender = handleRender.bind(undefined, done, "Compra venta de gatitos");
+    data2Code.process({}, simpleGen);
 
-    raml.loadFile('./test/cats.raml').then(function (data) {
-      data2Code.process(data, simpleGen);
-    }, function (error) {
-      console.log('Error parsing: ' + error);
-    });
+  });
+
+  it('testing parser when returning Array', function (done) {
+    var simpleGen = {};
+    simpleGen.template = '{{title}}';
+    simpleGen.parser = function (data) {
+      return [{ name: "test.test", model: {title:data.title + " finos"}}]
+    };
+    
+
+    simpleGen.handleRender = function(data){
+      data[0].content.should.equal("Compra venta de gatitos finos");
+      data[0].name.should.equal("test.test");
+      done()
+    };
+      data2Code.process(sampleData, simpleGen);
 
   });
 
@@ -47,17 +58,14 @@ describe('data2code basic test', function () {
     var simpleGen = {};
     simpleGen.template = '{{msg title}}';
     simpleGen.helpers = [
-      {name: 'msg', fn: function (msg) {
-        return 'Renta, ' + msg
-      } }
+      {name: 'msg', 
+       fn: function (msg) {
+          return 'Renta, ' + msg
+        } 
+      }
     ];
     simpleGen.handleRender = handleRender.bind(undefined, done, "Renta, Compra venta de gatitos");
-
-    raml.loadFile('./test/cats.raml').then(function (data) {
-      data2Code.process(data, simpleGen);
-    }, function (error) {
-      console.log('Error parsing: ' + error);
-    });
+    data2Code.process(sampleData, simpleGen);
 
   });
 
@@ -68,12 +76,7 @@ describe('data2code basic test', function () {
       {name: 'header', str: 'Testing partial'}
     ];
     simpleGen.handleRender = handleRender.bind(undefined, done, "Testing partial");
-
-    raml.loadFile('./test/cats.raml').then(function (data) {
-      data2Code.process(data, simpleGen);
-    }, function (error) {
-      console.log('Error parsing: ' + error);
-    });
+    data2Code.process(sampleData, simpleGen);
 
   });
 

@@ -12,9 +12,20 @@ A generator is a simple object with the following properties:
 
  * Required properties:
     * template -> Handlebars template.
+    * parser(data) -> Function it receives RAML parsed data, returns parsed data
+      The parser must return and array of object each object must have name and content properties
+
+Sample:
+```javascript
+[ { name: "test.test", 
+    model: {
+      title:data.title + " finos"
+      }
+  }
+]
+```
  * Optional properties:
     * handleRender([str]) -> This function handles the render results, usually writes to disk. 
-    * parser(data) -> Function it receives RAML parsed data, returns parsed data.                                                     
     * helpers -> Handlebars helpers.  
     * partials -> Handlebars partials. 
 

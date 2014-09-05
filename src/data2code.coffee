@@ -1,8 +1,6 @@
 Handlebars = require("handlebars")
 
 module.exports.process = (data , gen) ->
-#  console.log "data2Code#process.gen", gen
-#  console.log "Data2Code#process.data", data
   if gen.handleRender and typeof gen.handleRender is 'function'
 
     if gen.helpers and gen.helpers instanceof Array
@@ -24,23 +22,21 @@ module.exports.process = (data , gen) ->
         console.log "Parser error" , e
     else
       dataParsed  = data
-    try
-      template = Handlebars.compile(gen.template)
-      if Array.isArray dataParsed
-        result = []
-        for obj in dataParsed
-          result.push {name: obj.name, str :template(obj.model)}
-        gen.handleRender(result)
-      else
-        if dataParsed.name and dataParsed.model
-          gen.hanleRender([{name:dataParsed.name,str: template(dataParsed.model) }])
+    
+    template = Handlebars.compile(gen.template)
+    if Array.isArray dataParsed
+      result = []
+      for obj in dataParsed
+        if obj.name and obj.model
+          result.push {name: obj.name, content: template(obj.model)}
         else
-          gen.handleRender([template(dataParsed)])
-    catch e
-      console.log e
-      null
+          throw new Error("Data element doesn't have name or model please")
+
+      gen.handleRender(result)
+    else
+      throw new Error("Digest data is not and Array")
   else
-    console.error "generator.handleRender not defined"
+    throw new Error("generator.handleRender not defined")
 
 
 

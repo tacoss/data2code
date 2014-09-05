@@ -3,10 +3,12 @@
 title: Compra venta de gatitos
 version: v1
 #baseUri: http:/localhost:8080/{version}/
+baseUri: http://mocksvc.mulesoft.com/mocks/08923082-658e-41d9-a5e5-d1eacb438183
 mediaType: application/json
 schemas:
   - cats: !include cats.schema.json
   - cat: !include cat.schema.json
+  - error: !include error.schema.json
 resourceTypes:
   - collection: 
       get:
@@ -16,8 +18,16 @@ resourceTypes:
               schema: <<resourcePathName>>
           500:
             body:
-              schema: <<resourcePathName>>
-
+              schema: error
+              example: |                
+                { 
+                  "error" : {
+                    "code" : "java.lang.NumberFormatException",
+                    "messages" : "For input string: \"-1s01.2335314026465\"",
+                    "status": 500
+                   }
+                }
+                
       post:
         responses:
           200:
@@ -29,19 +39,13 @@ resourceTypes:
         responses:
           200:
             body:
-              schema: <<resourcePathName| !singularize>>
-          404:
-            body:
-              schema: <<resourcePathName| !singularize>>
+              schema: <<resourcePathName | !singularize>>
               
       put:
-        description: Update a cat
-        body:
-          schema: <<resourcePathName>>
         responses:
           201:
             body:
-              schema: <<resourcePathName| !singularize>>
+              schema: <<resourcePathName>>
       delete:
         responses:
           304:
@@ -53,8 +57,7 @@ resourceTypes:
   type: collection
     
   /{catId}:
-    displayName: Gato
     description: Un gatito en especifico
     type: member
+   
   
-
