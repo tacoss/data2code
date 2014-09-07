@@ -16,7 +16,6 @@ describe('data2code basic test', function () {
 
   var sampleData = [{ name: "test.test", model: {title: "Compra venta de gatitos"}}];
 
-
   it('should generate something', function (done) {
     var simpleGen = {};
     simpleGen.template = '{{title}}';
@@ -37,11 +36,11 @@ describe('data2code basic test', function () {
 
   });
 
-  it('testing parser when returning Array', function (done) {
+  it('testing parser when returning Arrasy', function (done) {
     var simpleGen = {};
     simpleGen.template = '{{title}}';
     simpleGen.parser = function (data) {
-      return [{ name: "test.test", model: {title:data.title + " finos"}}]
+      return [{ name: "test.test", model: {title:data[0].model.title + " finos"}}]
     };
     
 

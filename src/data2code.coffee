@@ -30,7 +30,7 @@ module.exports.process = (data , gen) ->
         if obj.name and obj.model
           result.push {name: obj.name, content: template(obj.model)}
         else
-          throw new Error("Data element doesn't have name or model please")
+          throw new Error("Data element doesn't have name or model")
 
       gen.handleRender(result)
     else
