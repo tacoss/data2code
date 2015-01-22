@@ -3,17 +3,17 @@ Handlebars = require("handlebars")
 module.exports.process = (data , gen) ->
   if gen.handleRender and typeof gen.handleRender is 'function'
 
-    if gen.helpers and gen.helpers instanceof Array
-      for helper in gen.helpers
-        if helper.name and helper.fn and typeof helper.fn is 'function'
-          Handlebars.registerHelper(helper.name, helper.fn)
+    if gen.helpers
+      for key of gen.helpers
+        fn = gen.helpers[key]
+        if fn and typeof fn is 'function'
+          Handlebars.registerHelper(key, fn)
         else
-          console.error "helpers not are in incorrect format"
+          console.error "helpers " + key + "is not a function"
 
     if gen.partials
-      for partial in gen.partials
-        if partial.name and partial.str
-          Handlebars.registerPartial(partial.name, partial.str)
+      for key of gen.partials
+          Handlebars.registerPartial(key, gen.partials[key])
 
     if typeof gen.parser is 'function'
       try
