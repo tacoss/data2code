@@ -1,4 +1,6 @@
 # data to code generator
+
+[![Build Status](https://img.shields.io/travis/gextech/data2code/master.svg?style=flat)](https://travis-ci.org/gextech/data2code)
   
   * This module generate code from a javascript Object
   * It uses Handlebars templates
