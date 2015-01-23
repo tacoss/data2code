@@ -1,4 +1,10 @@
 'use strict';
+
+var Mocha = require('mocha');
+var chai = require('chai');
+chai.should();
+
+'use strict';
 var raml = require('raml-parser'), expect = require('chai').expect;
 var data2Code = require('..');
 
@@ -56,13 +62,9 @@ describe('data2code basic test', function () {
   it('testing helpers', function (done) {
     var simpleGen = {};
     simpleGen.template = '{{msg title}}';
-    simpleGen.helpers = [
-      {name: 'msg', 
-       fn: function (msg) {
-          return 'Renta, ' + msg
-        } 
-      }
-    ];
+    simpleGen.helpers = {
+      msg: function (msg) { return 'Renta, ' + msg}
+    };
     simpleGen.handleRender = handleRender.bind(undefined, done, "Renta, Compra venta de gatitos");
     data2Code.process(sampleData, simpleGen);
 
@@ -71,9 +73,9 @@ describe('data2code basic test', function () {
   it('testing partials', function (done) {
     var simpleGen = {};
     simpleGen.template = '{{>header}}';
-    simpleGen.partials = [
-      {name: 'header', str: 'Testing partial'}
-    ];
+    simpleGen.partials = {
+      header:'Testing partial'
+  };
     simpleGen.handleRender = handleRender.bind(undefined, done, "Testing partial");
     data2Code.process(sampleData, simpleGen);
 
