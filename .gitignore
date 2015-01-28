@@ -5,3 +5,4 @@ data2code.iml
 target
 build
 *.DS_Store
+npm-debug.log

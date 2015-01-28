@@ -12,15 +12,14 @@ describe('data2code basic test', function () {
 
   var handleRender = function (done, expectedResult, result) {
     try {
-      result[0].content.should.equal(expectedResult);
-      result[0].name.should.equal("test.test");
+      result[0]["test.test"].should.equal(expectedResult);
       done();
     } catch (x) {
       done(x);
     }
   };
 
-  var sampleData = [{ name: "test.test", model: {title: "Compra venta de gatitos"}}];
+  var sampleData = [{"test.test" : {title: "Compra venta de gatitos"}}];
 
   it('should generate something', function (done) {
     var simpleGen = {};
@@ -46,16 +45,11 @@ describe('data2code basic test', function () {
     var simpleGen = {};
     simpleGen.template = '{{title}}';
     simpleGen.parser = function (data) {
-      return [{ name: "test.test", model: {title:data[0].model.title + " finos"}}]
+      return [{"test.test" : {title: data[0]["test.test"].title + " finos"}}]
     };
-    
 
-    simpleGen.handleRender = function(data){
-      data[0].content.should.equal("Compra venta de gatitos finos");
-      data[0].name.should.equal("test.test");
-      done()
-    };
-      data2Code.process(sampleData, simpleGen);
+    simpleGen.handleRender = handleRender.bind(undefined, done, "Compra venta de gatitos finos");
+    data2Code.process(sampleData, simpleGen);
 
   });
 
@@ -63,7 +57,9 @@ describe('data2code basic test', function () {
     var simpleGen = {};
     simpleGen.template = '{{msg title}}';
     simpleGen.helpers = {
-      msg: function (msg) { return 'Renta, ' + msg}
+      msg: function (msg) {
+        return 'Renta, ' + msg
+      }
     };
     simpleGen.handleRender = handleRender.bind(undefined, done, "Renta, Compra venta de gatitos");
     data2Code.process(sampleData, simpleGen);
@@ -74,8 +70,8 @@ describe('data2code basic test', function () {
     var simpleGen = {};
     simpleGen.template = '{{>header}}';
     simpleGen.partials = {
-      header:'Testing partial'
-  };
+      header: 'Testing partial'
+    };
     simpleGen.handleRender = handleRender.bind(undefined, done, "Testing partial");
     data2Code.process(sampleData, simpleGen);
 
