@@ -40,10 +40,15 @@ var raml = require('raml-parser');
 
 var simpleGen = {};
 simpleGen.template = '{{title}}';
+simpleGen.parser = function(){
+
+}
 var handleRender = function (result) {
   console.log(result);
 }
-
+Or to use multiple templates
+var simpleGen = {}
+simpleGen.templates = [{tmpl: "{title}", parser: function }]
 
 raml.loadFile('myAPI.raml').then( function(data){
   data2Code.process(data, simpleGen);   
