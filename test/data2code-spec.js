@@ -16,39 +16,68 @@ describe('data2code basic test', function () {
     }
   }
 
-  var sampleData = [{'test.test': {title: 'Compra venta de gatitos'}}]
+  var sampleData = [
+    {
+      title: 'Compra venta de gatitos',
+      name: 'test'
+    }]
 
-  xit('should generate something', function (done) {
+  it('should generate something', function (done) {
     var simpleGen = {}
-    simpleGen.template = '{{title}}'
+    simpleGen.template = {'test.test': '{{title}}'}
     simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos')
 
     data2Code.process(sampleData, simpleGen)
 
   })
 
-  xit('testing simple template parser', function (done) {
+  it('testing parser when returning Arrays', function (done) {
+    var simpleGen = {}
+    var parser = function (data) {
+      return [{title: data[0].title + ' finos'}]
+    }
+
+    simpleGen.templates = [{'test.test': {tmpl: '{{title}}', parser: parser}}]
+
+    simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos finos')
+    data2Code.process(sampleData, simpleGen)
+  })
+
+  it('testing parser when returning object', function (done) {
+    var simpleGen = {}
+    var parser = function () {
+      return {title: 'cat fino'}
+    }
+
+    simpleGen.templates = [{'test.test': {tmpl: '{{title}}', parser: parser}}]
+
+    simpleGen.handleRender = handleRender.bind(undefined, done, 'cat fino')
+    data2Code.process(sampleData, simpleGen)
+  })
+
+
+  it('testing simple template parser', function (done) {
     var simpleGen = {}
     simpleGen.parser = function () {
-      return [{'test.test': {title: 'Compra venta de gatitos simple'}}]
+      return [{title: 'Compra venta de gatitos simple'}]
     }
-    simpleGen.template = '{{title}}'
+    simpleGen.template = {'test.test': '{{title}}'}
     simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos simple')
     data2Code.process(sampleData, simpleGen)
   })
 
-  xit('testing new definition of template', function (done) {
+  it('testing new definition of template', function (done) {
     var simpleGen = {}
     var parser = function () {
-      return [{'test.test': {title: 'Compra venta de gatitos feos'}}]
+      return [{title: 'Compra venta de gatitos feos'}]
     }
-    simpleGen.template = {tmpl: '{{title}}', parser: parser}
+    simpleGen.template = {'test.test': {tmpl: '{{title}}', parser: parser}}
 
     simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos feos')
     data2Code.process(sampleData, simpleGen)
   })
 
-  it('should interpolate name', function(done){
+  it('should interpolate name', function (done) {
     var simpleGen = {}
     var parser = function () {
       var context = {
@@ -60,12 +89,11 @@ describe('data2code basic test', function () {
     }
     simpleGen.template = {'{{name}}Test': {tmpl: '{{title}}', parser: parser}}
 
-    simpleGen.handleRender = function(results){
-       var test = _.find(results, function (result) {
-          for(var key in result) break;
-          return key === 'SampleTest'
-        })
-      console.log(test)
+    simpleGen.handleRender = function (results) {
+      var test = _.find(results, function (result) {
+        for (var key in result) break
+        return key === 'SampleTest'
+      })
       test.should.not.be.null
       done()
     }
@@ -73,34 +101,37 @@ describe('data2code basic test', function () {
 
   })
 
-  xit('should works with multiple templates and multiple parsers', function (done) {
+  it('should works with multiple templates and multiple parsers', function (done) {
     var multipleGen = {
       templates: [
-        {'{name}Resource.java':  
-          { tmpl : 'hola {{title}}',
-            parser: function(){
-                return [{'test.testx': {title: 'parse1'}}]
-              }
+        {
+          '{{name}}Resource.java': {
+            tmpl: 'hola {{title}}',
+            parser: function () {
+              return [{title: 'parse1', name: 'test'}]
             }
+          }
         },
-        {'{title}.md': 
-          { tmpl: 'readme {{title}}', 
-            parser: function(){
-              return [{'test.testy': {title: 'parse2'}}]
+        {
+          '{{name}}.md': {
+            tmpl: 'readme {{title}}',
+            parser: function () {
+              return [{title: 'parse2', name: 'readme'}]
             }
           }
         }
       ],
       handleRender: function (results) {
-
         var testx = _.find(results, function (result) {
-          return Object.keys(result)[0] === 'test.testx'
+          for (var key in result) break;
+          return key === 'testResource.java'
         })
         var testy = _.find(results, function (result) {
-          return Object.keys(result)[0] === 'test.testy'
+          for (var key in result) break;
+          return key === 'readme.md'
         })
-        testx['test.testx'].should.equal('hola parse1')
-        testy['test.testy'].should.equal('readme parse2')
+        testx['testResource.java'].should.equal('hola parse1')
+        testy['readme.md'].should.equal('readme parse2')
 
         done()
       }
@@ -108,34 +139,36 @@ describe('data2code basic test', function () {
     data2Code.process(sampleData, multipleGen)
   })
 
-  xit('should use the same parser with diferrent templates', function(done){
+  it('should use the same parser with different templates', function (done) {
     var multipleGen = {
+      parser: function () {
+        return [{msg: 'hola parse'}]
+      },
       templates: [
-        {'Readme.md': '{{readme}}'}, {'Resource.java': '{{java}}'}
+        {'readme.md': '{{msg}}'}, {'Resource.java': '{{msg}}'}
       ],
-      handleRender: function (results){
-        console.log(results)
+      handleRender: function (results) {
+        var testx = _.find(results, function (result) {
+          for (var key in result) break;
+          return key === 'Resource.java'
+        })
+        var testy = _.find(results, function (result) {
+          for (var key in result) break;
+          return key === 'readme.md'
+        })
+        testx['Resource.java'].should.equal('hola parse')
+        testy['readme.md'].should.equal('hola parse')
+
         done()
       }
     }
     data2Code.process(sampleData, multipleGen)
   });
 
-  xit('testing parser when returning Arrasy', function (done) {
+
+  it('testing helpers', function (done) {
     var simpleGen = {}
-    var parser = function (data) {
-      return [{'test.test': {title: data[0]['test.test'].title + ' finos'}}]
-    }
-
-    simpleGen.templates = [{tmpl: '{{title}}', parser: parser}]
-
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos finos')
-    data2Code.process(sampleData, simpleGen)
-  })
-
-  xit('testing helpers', function (done) {
-    var simpleGen = {}
-    simpleGen.template = '{{msg title}}'
+    simpleGen.template = {'test.test': '{{msg title}}'}
     simpleGen.helpers = {
       msg: function (msg) {
         return 'Renta, ' + msg
@@ -145,9 +178,9 @@ describe('data2code basic test', function () {
     data2Code.process(sampleData, simpleGen)
   })
 
-  xit('testing partials', function (done) {
+  it('testing partials', function (done) {
     var simpleGen = {}
-    simpleGen.template = '{{>header}}'
+    simpleGen.template = {'test.test': '{{>header}}'}
     simpleGen.partials = {
       header: 'Testing partial'
     }
