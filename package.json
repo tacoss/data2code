@@ -1,6 +1,6 @@
 {
   "name": "data2code",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Codegenerator for data",
   "main": "lib/data2code.js",
   "dependencies": {
