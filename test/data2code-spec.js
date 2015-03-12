@@ -1,3 +1,5 @@
+/*eslint no-unused-expressions:0*/
+/*eslint-env mocha*/
 'use strict'
 
 var chai = require('chai')
@@ -43,6 +45,14 @@ describe('data2code basic test', function () {
     data2Code.process(sampleData, simpleGen)
   })
 
+  it('simple gen', function(done){
+    var gen = {
+       template: {'test.test': '{{title}}'},
+       handleRender: handleRender.bind(undefined, done, 'Compra venta de gatitos')
+    }
+    data2Code.process(sampleData, gen)
+  })
+
   it('testing parser when returning object', function (done) {
     var simpleGen = {}
     var parser = function () {
@@ -81,7 +91,7 @@ describe('data2code basic test', function () {
     var simpleGen = {}
     var parser = function () {
       var context = {
-        name: "Sample",
+        name: 'Sample',
         title: 'Compra venta de gatitos feos'
       }
 
@@ -91,7 +101,7 @@ describe('data2code basic test', function () {
 
     simpleGen.handleRender = function (results) {
       var test = _.find(results, function (result) {
-        for (var key in result) break
+        var key = Object.keys(result)[0]
         return key === 'SampleTest'
       })
       test.should.not.be.null
@@ -123,11 +133,11 @@ describe('data2code basic test', function () {
       ],
       handleRender: function (results) {
         var testx = _.find(results, function (result) {
-          for (var key in result) break;
+          var key = Object.keys(result)[0]
           return key === 'testResource.java'
         })
         var testy = _.find(results, function (result) {
-          for (var key in result) break;
+          var key = Object.keys(result)[0]
           return key === 'readme.md'
         })
         testx['testResource.java'].should.equal('hola parse1')
@@ -149,11 +159,11 @@ describe('data2code basic test', function () {
       ],
       handleRender: function (results) {
         var testx = _.find(results, function (result) {
-          for (var key in result) break;
+          var key = Object.keys(result)[0]
           return key === 'Resource.java'
         })
         var testy = _.find(results, function (result) {
-          for (var key in result) break;
+          var key = Object.keys(result)[0]
           return key === 'readme.md'
         })
         testx['Resource.java'].should.equal('hola parse')
@@ -163,7 +173,7 @@ describe('data2code basic test', function () {
       }
     }
     data2Code.process(sampleData, multipleGen)
-  });
+  })
 
 
   it('testing helpers', function (done) {
