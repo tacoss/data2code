@@ -11,7 +11,13 @@
 ##Simple definition:
 ```javascript
 var gen = {
-  template: {'readme.md' : '{{title}}'
+  template: {'readme.md' : '{{title}}'}
+}
+```
+##Multiple templates:
+```javascript
+var gen = {
+  templates: [{'readme.md' : '{{title}}'}, {'Main.java' : '{{title}}'}]
 }
 ```
 
@@ -19,7 +25,7 @@ var gen = {
 The key is also a handlebars template it will use the context to generate the final name.
 ```javascript
 var gen = {
-  template: {'readme{{title}}.md' : '{{title}}'
+  template: {'readme{{title}}.md' : '{{title}}'}
 }
 ```
 
@@ -28,7 +34,7 @@ A parser could be used to modify or adapt the data, generally is used
 to reduce logic in the template.
 ```javascript
 var gen = {
-  template: {'readme{{title}}.md' : '{{title}}',
+  template: {'readme{{title}}.md' : '{{title}}'},
   parser: function(data){}
 }
 ```
