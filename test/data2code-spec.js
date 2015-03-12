@@ -9,9 +9,9 @@ var _ = require('lodash')
 
 describe('data2code basic test', function () {
 
-  var handleRender = function (done, expectedResult, result) {
+  var handleResults = function (done, expectedResult, results) {
     try {
-      result[0]['test.test'].should.equal(expectedResult)
+      results[0]['test.test'].should.equal(expectedResult)
       done()
     } catch (x) {
       done(x)
@@ -27,9 +27,8 @@ describe('data2code basic test', function () {
   it('should generate something', function (done) {
     var simpleGen = {}
     simpleGen.template = {'test.test': '{{title}}'}
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos')
-
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    handleResults(done, 'Compra venta de gatitos', results)
 
   })
 
@@ -40,17 +39,16 @@ describe('data2code basic test', function () {
     }
 
     simpleGen.templates = [{'test.test': {tmpl: '{{title}}', parser: parser}}]
-
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos finos')
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    handleResults(done, 'Compra venta de gatitos finos', results)
   })
 
-  it('simple gen', function(done){
+  it('simple gen', function (done) {
     var gen = {
-       template: {'test.test': '{{title}}'},
-       handleRender: handleRender.bind(undefined, done, 'Compra venta de gatitos')
+      template: {'test.test': '{{title}}'}
     }
-    data2Code.process(sampleData, gen)
+    var results = data2Code.process(sampleData, gen)
+    handleResults(done, 'Compra venta de gatitos', results)
   })
 
   it('testing parser when returning object', function (done) {
@@ -60,9 +58,8 @@ describe('data2code basic test', function () {
     }
 
     simpleGen.templates = [{'test.test': {tmpl: '{{title}}', parser: parser}}]
-
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'cat fino')
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    handleResults(done, 'cat fino', results)
   })
 
 
@@ -72,8 +69,8 @@ describe('data2code basic test', function () {
       return [{title: 'Compra venta de gatitos simple'}]
     }
     simpleGen.template = {'test.test': '{{title}}'}
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos simple')
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    handleResults(done, 'Compra venta de gatitos simple', results)
   })
 
   it('testing new definition of template', function (done) {
@@ -83,8 +80,8 @@ describe('data2code basic test', function () {
     }
     simpleGen.template = {'test.test': {tmpl: '{{title}}', parser: parser}}
 
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'Compra venta de gatitos feos')
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    handleResults(done, 'Compra venta de gatitos feos', results)
   })
 
   it('should interpolate name', function (done) {
@@ -99,15 +96,14 @@ describe('data2code basic test', function () {
     }
     simpleGen.template = {'{{name}}Test': {tmpl: '{{title}}', parser: parser}}
 
-    simpleGen.handleRender = function (results) {
-      var test = _.find(results, function (result) {
-        var key = Object.keys(result)[0]
-        return key === 'SampleTest'
-      })
-      test.should.not.be.null
-      done()
-    }
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    var test = _.find(results, function (result) {
+      var key = Object.keys(result)[0]
+      return key === 'SampleTest'
+    })
+    test.should.not.be.null
+    done()
+
 
   })
 
@@ -130,23 +126,22 @@ describe('data2code basic test', function () {
             }
           }
         }
-      ],
-      handleRender: function (results) {
-        var testx = _.find(results, function (result) {
-          var key = Object.keys(result)[0]
-          return key === 'testResource.java'
-        })
-        var testy = _.find(results, function (result) {
-          var key = Object.keys(result)[0]
-          return key === 'readme.md'
-        })
-        testx['testResource.java'].should.equal('hola parse1')
-        testy['readme.md'].should.equal('readme parse2')
-
-        done()
-      }
+      ]
     }
-    data2Code.process(sampleData, multipleGen)
+    var results = data2Code.process(sampleData, multipleGen)
+    var testx = _.find(results, function (result) {
+      var key = Object.keys(result)[0]
+      return key === 'testResource.java'
+    })
+    var testy = _.find(results, function (result) {
+      var key = Object.keys(result)[0]
+      return key === 'readme.md'
+    })
+    testx['testResource.java'].should.equal('hola parse1')
+    testy['readme.md'].should.equal('readme parse2')
+
+    done()
+
   })
 
   it('should use the same parser with different templates', function (done) {
@@ -156,23 +151,21 @@ describe('data2code basic test', function () {
       },
       templates: [
         {'readme.md': '{{msg}}'}, {'Resource.java': '{{msg}}'}
-      ],
-      handleRender: function (results) {
-        var testx = _.find(results, function (result) {
-          var key = Object.keys(result)[0]
-          return key === 'Resource.java'
-        })
-        var testy = _.find(results, function (result) {
-          var key = Object.keys(result)[0]
-          return key === 'readme.md'
-        })
-        testx['Resource.java'].should.equal('hola parse')
-        testy['readme.md'].should.equal('hola parse')
-
-        done()
-      }
+      ]
     }
-    data2Code.process(sampleData, multipleGen)
+    var results = data2Code.process(sampleData, multipleGen)
+    var testx = _.find(results, function (result) {
+      var key = Object.keys(result)[0]
+      return key === 'Resource.java'
+    })
+    var testy = _.find(results, function (result) {
+      var key = Object.keys(result)[0]
+      return key === 'readme.md'
+    })
+    testx['Resource.java'].should.equal('hola parse')
+    testy['readme.md'].should.equal('hola parse')
+
+    done()
   })
 
 
@@ -184,8 +177,8 @@ describe('data2code basic test', function () {
         return 'Renta, ' + msg
       }
     }
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'Renta, Compra venta de gatitos')
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    handleResults(done, 'Renta, Compra venta de gatitos', results)
   })
 
   it('testing partials', function (done) {
@@ -194,8 +187,8 @@ describe('data2code basic test', function () {
     simpleGen.partials = {
       header: 'Testing partial'
     }
-    simpleGen.handleRender = handleRender.bind(undefined, done, 'Testing partial')
-    data2Code.process(sampleData, simpleGen)
+    var results = data2Code.process(sampleData, simpleGen)
+    handleResults(done, 'Testing partial', results)
   })
 
 })
