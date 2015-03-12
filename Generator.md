@@ -1,4 +1,4 @@
-# Generator spec
+# Generator specification
 
  * Required properties:
     * template | templates -> Handlebars templates, {key: template} the key it's used to generate the file name.
