@@ -1,12 +1,10 @@
 # Generator spec
 
  * Required properties:
-    * template | templates -> Handlebars templates.
+    * template | templates -> Handlebars templates, {key: template} the key it's used to generate the file name.
 
  * Optional properties:
-    * parser(data) -> Function that receives data (in raml2code it pases  RAML object), returns the context for handlebars templates, it could return
-    and array
-      The parser must return and array of object each object must have name and content properties
+    * parser(data) -> It transform the canonical data, it returns the context for handlebars templates, it could be object or array.
     * helpers -> Handlebars helpers.
     * partials -> Handlebars partials.
 
@@ -18,7 +16,7 @@ var gen = {
 ```
 
 ##Interpolating name:
-The name is also a handlebars template it will use the context to generate the final name.
+The key is also a handlebars template it will use the context to generate the final name.
 ```javascript
 var gen = {
   template: {'readme{{title}}.md' : '{{title}}'
@@ -27,7 +25,7 @@ var gen = {
 
 ##Defining a parser:
 A parser could be used to modify or adapt the data, generally is used
-to reduce login in the template
+to reduce logic in the template.
 ```javascript
 var gen = {
   template: {'readme{{title}}.md' : '{{title}}',
