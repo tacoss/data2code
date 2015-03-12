@@ -4,7 +4,7 @@
     * template | templates -> Handlebars templates, {key: template} the key it's used to generate the file name.
 
  * Optional properties:
-    * parser(data) -> It transform the canonical data, it returns the context for handlebars templates, it could be object or array.
+    * parser(data) -> It transform the canonical data, it returns the context for handlebars templates, the return could be object or array.
     * helpers -> Handlebars helpers.
     * partials -> Handlebars partials.
 
